@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Croquis</string>
+    <string name="title_activity_croquis">Map</string>
+    <string name="fab_btn_cars">Vehículos</string>
+    <string name="fab_btn_signals">Señales</string>
+    <string name="fab_btn_traces">Rastros</string>
+    <string name="croquis_activity_set_marker">Toca el mapa para colocar el marcador</string>
+</resources>
