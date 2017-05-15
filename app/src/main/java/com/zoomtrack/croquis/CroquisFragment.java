@@ -3,7 +3,9 @@ package com.zoomtrack.croquis;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,7 +46,7 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     LatLng latLng;
     GoogleMap mGoogleMap;
     private CroquisElement selectedElement = null;
-    float rotation = 0;
+    private Marker touchedMarker = null;
     Communicator communicator;
 
     private final int[] MAP_TYPES = {GoogleMap.MAP_TYPE_SATELLITE,
@@ -159,16 +162,24 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
                 .title(selectedElement.getTitle())
-                //.rotation(360.0f)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.fromBitmap(
-                BitmapFactory.decodeResource(getResources(),
-                        selectedElement.getIcon32())));
+                .icon(getIcon(selectedElement));
         Marker marker = mGoogleMap.addMarker(options);
         selectedElement = null;
         communicator.hideShadow();
-
     }
+
+
+    private BitmapDescriptor getIcon(CroquisElement element){
+        Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(element.getIcon200())).getBitmap();
+        Log.i(TAG, "getIcon: bitmap " + bitmap.getWidth());
+        Log.i(TAG, "getIcon: bitmap " + bitmap.getHeight());
+        element.width = bitmap.getWidth();
+        element.height = bitmap.getHeight();
+        element.reSize();
+        return BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmap, element.width, element.height, false));
+    }
+
 
     public static float distFrom(LatLng p1, LatLng p2) {
         double earthRadius = 6371000; //meters
@@ -185,6 +196,10 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     public void setSelectedElement(CroquisElement element){
         this.selectedElement = element;
         Log.i(TAG, "onSelectCar: " + selectedElement.getTitle());
+    }
+
+    public void rotateTouchedMarker(float grades){
+        touchedMarker.setRotation(grades);
     }
 
     @Override
@@ -227,9 +242,8 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        rotation += 30;
-        marker.setRotation(rotation);
-        Log.i(TAG, "onMarkerClick: " + rotation);
+        touchedMarker = marker;
+        communicator.showRotate();
         return false;
     }
 
@@ -241,7 +255,7 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     @Override
     public void onMarkerDrag(Marker marker) {
         Log.d("System out", "onMarkerDragStart..."+marker.getPosition().latitude+"..."+marker.getPosition().longitude);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
     }
 
     @Override

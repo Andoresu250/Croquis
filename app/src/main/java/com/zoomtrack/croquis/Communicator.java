@@ -10,4 +10,6 @@ public interface Communicator {
 
     void hideShadow();
 
+    void showRotate();
+
 }

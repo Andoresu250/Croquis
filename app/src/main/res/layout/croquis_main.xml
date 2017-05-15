@@ -7,8 +7,6 @@
     tools:context="com.zoomtrack.croquis.CroquisActivity"
     >
 
-
-
     <fragment
         android:name="com.zoomtrack.croquis.CroquisFragment"
         android:layout_height="match_parent"

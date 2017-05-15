@@ -20,14 +20,19 @@ import java.util.ArrayList;
  * Created by Andoresu on 13/05/2017.
  */
 
-public class DFCars extends android.support.v4.app.DialogFragment {
+public class DFCroquisElements extends android.support.v4.app.DialogFragment {
 
     Communicator communicator;
     CroquisElement selectElement = null;
     ImageView selectImageView;
     TextView selectTitle;
 
-    private static String TAG = "DFCars";
+    int[] resources200;
+    String[] titles;
+    float[] scales;
+
+    private static String TAG = "DFCroquisElements";
+
 
     @Override
     public void onAttach(Context context) {
@@ -45,6 +50,10 @@ public class DFCars extends android.support.v4.app.DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        resources200 = getArguments().getIntArray(Constants.RESOURCES_200);
+        titles = getArguments().getStringArray(Constants.RESOURCES_TITLE);
+        scales = getArguments().getFloatArray(Constants.RESOURCES_SCALE);
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View layout = layoutInflater.inflate(R.layout.dialog_fragment_cars, null);
@@ -74,27 +83,13 @@ public class DFCars extends android.support.v4.app.DialogFragment {
     private ImageView generateImageView(CroquisElement element){
         ImageView imageView = new ImageView(getActivity().getApplicationContext());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 100));
+        imageView.setPadding(10,10,10,10);
         imageView.setImageDrawable(getResources().getDrawable(element.getIcon200()));
         imageView.setOnClickListener(selectImageListener(element));
         return imageView;
     }
 
     private void setImageViews(View layout){
-        int[] resources200 = {R.drawable.bicicleta_200, R.drawable.bicicleta_volcada_200, R.drawable.bus_200, R.drawable.bus_volcado_200,
-                           R.drawable.camion_200, R.drawable.camion_volcado_200, R.drawable.camion_grande_200, R.drawable.camion_grande_volcado_200,
-                           R.drawable.camioneta_200, R.drawable.carro_200, R.drawable.montacarga_200, R.drawable.montacarga_volcado_200,
-                           R.drawable.motocicleta_200, R.drawable.motoclicleta_volcada_200, R.drawable.vehiculo_traccion_animal_200, R.drawable.vehiculo_traccion_animal_volcado_200,
-                           R.drawable.animal_traccion_muerto_200};
-        int[] resources32 = {R.drawable.bicicleta_32, R.drawable.bicicleta_volcada_32, R.drawable.bus_32, R.drawable.bus_volcado_32,
-                            R.drawable.camion_32, R.drawable.camion_volcado_32, R.drawable.camion_grande_32, R.drawable.camion_grande_volcado_32,
-                            R.drawable.camioneta_32, R.drawable.carro_32, R.drawable.montacarga_32, R.drawable.montacarga_volcado_32,
-                            R.drawable.motocicleta_32, R.drawable.motoclicleta_volcada_32, R.drawable.vehiculo_traccion_animal_32, R.drawable.vehiculo_traccion_animal_volcado_32,
-                            R.drawable.animal_traccion_muerto_32};
-        String[] titles = {"Bicicleta", "Bicicleta volcada", "Bus", "Bus volcado",
-                            "Camion", "Camion volcado", "Camion grande", "Camion grande volcado",
-                            "Camioneta", "Carro", "Montacarga", "Montacarga volcado",
-                            "Motocileta", "Motocicleta volcada", "Vehiculo de traccion animal", "Vehiculo de traccion animal volcado",
-                            "Animal de traccion muerto"};
 
         LinearLayout col1 = (LinearLayout) layout.findViewById(R.id.col1);
         LinearLayout col2 = (LinearLayout) layout.findViewById(R.id.col2);
@@ -103,7 +98,7 @@ public class DFCars extends android.support.v4.app.DialogFragment {
 
         ArrayList<CroquisElement> croquisElements = new ArrayList<>();
         for (int i = 0; i < resources200.length; i++) {
-            CroquisElement element = new CroquisElement(resources200[i], resources32[i], titles[i]);
+            CroquisElement element = new CroquisElement(resources200[i], titles[i], scales[i]);
             croquisElements.add(element);
             ImageView imageView = generateImageView(element);
             switch (i % 4){

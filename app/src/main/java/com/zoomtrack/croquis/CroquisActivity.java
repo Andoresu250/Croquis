@@ -1,12 +1,17 @@
 package com.zoomtrack.croquis;
 
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -61,7 +66,11 @@ public class CroquisActivity extends AppCompatActivity implements Communicator{
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSelectCarDialog();
+                Bundle bundle = new Bundle();
+                bundle.putIntArray(Constants.RESOURCES_200, Constants.car_resources200);
+                bundle.putStringArray(Constants.RESOURCES_TITLE, Constants.car_titles);
+                bundle.putFloatArray(Constants.RESOURCES_SCALE, Constants.car_scales);
+                openSelectMarkerDialog(bundle);
                 multipleActions.collapse();
             }
         };
@@ -85,10 +94,44 @@ public class CroquisActivity extends AppCompatActivity implements Communicator{
         };
     }
 
-    private void openSelectCarDialog(){
+    private void openSelectMarkerDialog(Bundle bundle){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        DFCars dfCars = new DFCars();
-        dfCars.show(fragmentManager, "DFCars");
+        DFCroquisElements dfCroquisElements = new DFCroquisElements();
+        dfCroquisElements.setArguments(bundle);
+        dfCroquisElements.show(fragmentManager, "dfCroquisElements");
+    }
+
+    private void openBottomSheetRotate(){
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(CroquisActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog_rotate, null);
+
+        SeekBar gradesBar = (SeekBar) view.findViewById(R.id.marker_rotation);
+        final TextView gradesTV = (TextView) view.findViewById(R.id.grades_text_view);
+
+        gradesBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                gradesTV.setText(progress + "°");
+                croquisFragment.rotateTouchedMarker(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+        bottomSheetBehavior.setPeekHeight(
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics())
+        );
+        bottomSheetDialog.show();
     }
 
     @Override
@@ -103,6 +146,11 @@ public class CroquisActivity extends AppCompatActivity implements Communicator{
     @Override
     public void hideShadow() {
         shadowLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showRotate(){
+        openBottomSheetRotate();
     }
 
 
