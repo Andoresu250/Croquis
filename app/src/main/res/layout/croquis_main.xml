@@ -57,6 +57,28 @@
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:id="@+id/add_object_btn"
+            app:fab_icon="@drawable/ic_objects"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_size="normal"
+            app:fab_title="@string/fab_btn_objects"
+            >
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/add_victim_btn"
+            app:fab_icon="@drawable/ic_victim"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_size="normal"
+            app:fab_title="@string/fab_btn_victims"
+            >
+        </com.getbase.floatingactionbutton.FloatingActionButton>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:id="@+id/add_car_btn"
             app:fab_icon="@drawable/ic_car"
             app:fab_colorNormal="@color/colorAccent"

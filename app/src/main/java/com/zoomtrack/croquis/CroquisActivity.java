@@ -27,6 +27,8 @@ public class CroquisActivity extends AppCompatActivity implements Communicator{
     private FloatingActionButton addCarBtn;
     private FloatingActionButton addSignalBtn;
     private FloatingActionButton addTraceBtn;
+    private FloatingActionButton addObjecBtn;
+    private FloatingActionButton addVictimBtn;
 
     private FloatingActionsMenu multipleActions;
 
@@ -53,43 +55,30 @@ public class CroquisActivity extends AppCompatActivity implements Communicator{
         addCarBtn = (FloatingActionButton) findViewById(R.id.add_car_btn);
         addSignalBtn = (FloatingActionButton) findViewById(R.id.add_signal_btn);
         addTraceBtn = (FloatingActionButton) findViewById(R.id.add_trace_btn);
+        addVictimBtn = (FloatingActionButton) findViewById(R.id.add_victim_btn);
+        addObjecBtn = (FloatingActionButton) findViewById(R.id.add_object_btn);
 
         shadowLayout = (LinearLayout) findViewById(R.id.shadow);
 
-        addCarBtn.setOnClickListener(addCarListener());
-        addSignalBtn.setOnClickListener(addCSignalListener());
-        addTraceBtn.setOnClickListener(addTraceListener());
+        addCarBtn.setOnClickListener(addElementListener(Constants.car_resources200, Constants.car_titles, Constants.car_scales));
+        addSignalBtn.setOnClickListener(addElementListener(Constants.signal_resources, Constants.siganl_titles, Constants.signal_scales));
+        addTraceBtn.setOnClickListener(addElementListener(Constants.trace_resources, Constants.trace_titles, Constants.trace_scales));
+        addVictimBtn.setOnClickListener(addElementListener(Constants.victim_resources, Constants.victim_titles, Constants.victim_scales));
+        addObjecBtn.setOnClickListener(addElementListener(Constants.object_resources, Constants.object_titles, Constants.object_scales));
 
     }
 
-    private View.OnClickListener addCarListener(){
+
+    public View.OnClickListener addElementListener(final int[] resources, final String[] titles, final float[] scales){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putIntArray(Constants.RESOURCES_200, Constants.car_resources200);
-                bundle.putStringArray(Constants.RESOURCES_TITLE, Constants.car_titles);
-                bundle.putFloatArray(Constants.RESOURCES_SCALE, Constants.car_scales);
+                bundle.putIntArray(Constants.RESOURCES_200, resources);
+                bundle.putStringArray(Constants.RESOURCES_TITLE, titles);
+                bundle.putFloatArray(Constants.RESOURCES_SCALE, scales);
                 openSelectMarkerDialog(bundle);
                 multipleActions.collapse();
-            }
-        };
-    }
-
-    private View.OnClickListener addCSignalListener(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: " + "click");
-            }
-        };
-    }
-
-    private View.OnClickListener addTraceListener(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: " + "click");
             }
         };
     }
