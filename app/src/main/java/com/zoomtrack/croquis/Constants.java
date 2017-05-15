@@ -97,5 +97,6 @@ public class Constants {
     public static String RESOURCES_200    = "CROQUIS_RESOURCES_200";
     public static String RESOURCES_TITLE  = "CROQUIS_RESOURCES_TITLE";
     public static String RESOURCES_SCALE = "CROQUIS_RESOURCES_SCALES";
+    public static String MEASUREMENT_ELEMENTS = "CROQUIS_MEASUREMENT_ELEMENTS";
 
 }

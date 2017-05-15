@@ -12,4 +12,12 @@ public interface Communicator {
 
     void showRotate();
 
+    void addMeasurement(MeasurementElement measurementElement);
+
+    void rmvMeasurement(MeasurementElement measurementElement);
+
+    void editMeasurement(MeasurementElement oldMeasurementElement, MeasurementElement newMeasurementElement);
+
+    void finishReferenceMarker();
+
 }

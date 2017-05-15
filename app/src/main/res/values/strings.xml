@@ -8,4 +8,5 @@
     <string name="fab_btn_victims">Victimas</string>
     <string name="croquis_activity_set_marker">Toca el mapa para colocar el marcador</string>
     <string name="croquis_activity_rotate_msg">Mueve la barra para rotar el icono</string>
+    <string name="croquis_activity_remove_marker">Remover icono</string>
 </resources>

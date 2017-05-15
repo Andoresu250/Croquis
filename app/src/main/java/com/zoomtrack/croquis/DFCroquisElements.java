@@ -43,8 +43,6 @@ public class DFCroquisElements extends android.support.v4.app.DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        //View view = inflater.inflate(R.layout.dialog_fragment_cars ,null);
-        //return view;
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -56,7 +54,7 @@ public class DFCroquisElements extends android.support.v4.app.DialogFragment {
         scales = getArguments().getFloatArray(Constants.RESOURCES_SCALE);
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View layout = layoutInflater.inflate(R.layout.dialog_fragment_cars, null);
+        View layout = layoutInflater.inflate(R.layout.dialog_fragment_croquis_elements, null);
         selectImageView = (ImageView) layout.findViewById(R.id.select_image_view);
         selectTitle = (TextView) layout.findViewById(R.id.select_title);
         setImageViews(layout);

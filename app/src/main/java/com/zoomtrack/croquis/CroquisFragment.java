@@ -48,6 +48,7 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     private CroquisElement selectedElement = null;
     private Marker touchedMarker = null;
     Communicator communicator;
+    public Marker referenceMarker = null;
 
     private final int[] MAP_TYPES = {GoogleMap.MAP_TYPE_SATELLITE,
             GoogleMap.MAP_TYPE_NORMAL,
@@ -126,9 +127,18 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
             @Override
             public void onMapClick(LatLng latLng) {
                 Log.i(TAG, "onMapClick: " + latLng.toString());
-                setMarker(latLng);
+                if (referenceMarker == null){
+                    referenceMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Punto de referencia").draggable(true));
+                }else{
+                    setMarker(latLng);
+                }
             }
         };
+    }
+
+    public void finishWithReferenceMarker(){
+        referenceMarker.setDraggable(false);
+        communicator.finishReferenceMarker();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -165,6 +175,14 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
                 .draggable(true)
                 .icon(getIcon(selectedElement));
         Marker marker = mGoogleMap.addMarker(options);
+
+
+
+        Log.i(TAG, "setMarker: X " + getX(referenceMarker, marker));
+        Log.i(TAG, "setMarker: Y " + getY(referenceMarker, marker));
+        MeasurementElement measurementElement = new MeasurementElement(getX(referenceMarker, marker), getY(referenceMarker, marker), selectedElement.getIcon200(), selectedElement.getTitle());
+        communicator.addMeasurement(measurementElement);
+        marker.setTag(measurementElement);
         selectedElement = null;
         communicator.hideShadow();
     }
@@ -172,14 +190,27 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
 
     private BitmapDescriptor getIcon(CroquisElement element){
         Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(element.getIcon200())).getBitmap();
-        Log.i(TAG, "getIcon: bitmap " + bitmap.getWidth());
-        Log.i(TAG, "getIcon: bitmap " + bitmap.getHeight());
         element.width = bitmap.getWidth();
         element.height = bitmap.getHeight();
         element.reSize();
         return BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmap, element.width, element.height, false));
     }
 
+    public void removeCroquisElement(){
+        communicator.rmvMeasurement((MeasurementElement) touchedMarker.getTag());
+        touchedMarker.remove();
+        touchedMarker = null;
+    }
+
+    private double getX(Marker a, Marker b){
+        double earthCircumference = 40075 * 1000;
+        return ((b.getPosition().longitude - a.getPosition().longitude) * earthCircumference * Math.cos((a.getPosition().latitude + b.getPosition().latitude) * Math.PI/360)/360);
+    }
+
+    private double getY(Marker a, Marker b){
+        double earthCircumference = 40075 * 1000;
+        return (b.getPosition().latitude - a.getPosition().latitude) * earthCircumference / 360;
+    }
 
     public static float distFrom(LatLng p1, LatLng p2) {
         double earthRadius = 6371000; //meters
@@ -196,6 +227,10 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     public void setSelectedElement(CroquisElement element){
         this.selectedElement = element;
         Log.i(TAG, "onSelectCar: " + selectedElement.getTitle());
+    }
+
+    private boolean isInFirstStep(){
+        return true;
     }
 
     public void rotateTouchedMarker(float grades){
@@ -261,6 +296,12 @@ public class CroquisFragment extends SupportMapFragment implements GoogleApiClie
     @Override
     public void onMarkerDragEnd(Marker marker) {
         Log.i("System out", "onMarkerDrag...");
+        if(marker.equals(referenceMarker))
+           return;
+        MeasurementElement oldMeasurementElement = (MeasurementElement) marker.getTag();
+        MeasurementElement newMeasurementElement = new MeasurementElement(getX(referenceMarker, marker), getY(referenceMarker, marker), oldMeasurementElement.imageResource, oldMeasurementElement.description);
+        marker.setTag(newMeasurementElement);
+        communicator.editMeasurement(oldMeasurementElement, newMeasurementElement);
     }
 
 

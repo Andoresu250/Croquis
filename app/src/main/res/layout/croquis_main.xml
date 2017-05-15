@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     tools:context="com.zoomtrack.croquis.CroquisActivity"
     >
@@ -39,9 +40,51 @@
                 />
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/first_shadow"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="5"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:background="@drawable/gradient_background"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <TextView
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFF"
+                android:text="Toca para establecer el punto de referencia"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 
+
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_check"
+            />
+    </android.support.design.widget.CoordinatorLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:layout_height="wrap_content"

@@ -33,4 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/remove_icon_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/danger"
+        android:textColor="#FFF"
+        android:text="@string/croquis_activity_remove_marker"
+        />
+
 </LinearLayout>
